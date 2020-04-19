@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<!-- Used API -->
+<!-- https://www.cbr-xml-daily.ru/ -->
+<body>
+    <h1>Curs Valutar</h1>
+
+    <script type="text/javascript" language="javascript">
+        function httpGet(theUrl) {
+            return new Promise(function (resolve, reject) {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("GET", theUrl, false);
+                xmlHttp.send(null);
+                resolve(xmlHttp.responseText);
+            });
+        }
+
+        function showCurs(data) {
+            console.log(data)
+            var newDiv = document.createElement("div");
+            newDiv.innerHTML = "<p>Name: " + data['Name'] + "</p>";
+            newDiv.innerHTML += "<p>Valute: " + data['Value'] + "</p>";
+            newDiv.innerHTML += "<p>Previous: " + data['Previous'] + "</p>";
+            newDiv.innerHTML += "<hr>";
+            my_div = document.getElementById("org_div1");
+            document.body.insertBefore(newDiv, my_div);
+        }
+
+        httpGet('https://www.cbr-xml-daily.ru/daily_json.js').then((data) => {
+            var result = JSON.parse(data)
+            console.log(result['Valute'])
+            showCurs(result['Valute']['MDL'])
+            showCurs(result['Valute']['EUR'])
+            showCurs(result['Valute']['RON'])
+            showCurs(result['Valute']['GBP'])
+            showCurs(result['Valute']['USD'])
+        });
+    </script>
+</body>
+</html>
